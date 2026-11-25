@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBERWAP // SEC-LAB — Ethical Hacking & Security Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Classic WAPka Dark Terminal Aesthetic */
+    :root {
+      --wap-bg: #050907;
+      --wap-panel: #0a140f;
+      --wap-header: #10281b;
+      --wap-border: #1d4d32;
+      --wap-neon: #00ff66;
+      --wap-neon-dim: #7ac496;
+      --wap-text: #d1fae0;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    body {
+      background-color: #020403;
+      color: var(--wap-text);
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    /* Centered Mobile WAP Container */
+    .wap-frame {
+      max-width: 480px;
+      width: 100%;
+      min-height: 100vh;
+      margin: 0 auto;
+      background-color: var(--wap-bg);
+      border-left: 1px solid var(--wap-border);
+      border-right: 1px solid var(--wap-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Classic WAP Header */
+    .wap-header {
+      background: linear-gradient(180deg, #133322 0%, #09170f 100%);
+      border-bottom: 2px solid var(--wap-neon);
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .wap-header h1 {
+      color: var(--wap-neon);
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(0, 255, 102, 0.45);
+      margin: 0;
+    }
+
+    .wap-header .subtitle {
+      color: var(--wap-neon-dim);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    /* Wapka-style Top Status Bar */
+    .wap-status {
+      background-color: #0c1f15;
+      border-bottom: 1px solid var(--wap-border);
+      padding: 5px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #9ce6b8;
+    }
+
+    .wap-link {
+      color: var(--wap-neon);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .wap-link:hover {
+      text-decoration: underline;
+    }
+
+    /* 4-Tab WAP Navigation */
+    .wap-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background-color: #08120d;
+      border-bottom: 1px solid var(--wap-border);
+    }
+
+    .wap-nav button {
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--wap-border);
+      color: var(--wap-neon);
+      padding: 9px 4px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .wap-nav button:last-child {
+      border-right: none;
+    }
+
+    .wap-nav button.active {
+      background-color: var(--wap-neon);
+      color: #040806;
+    }
+
+    /* Wapka Section Boxes */
+    .wap-box {
+      margin: 8px;
+      background-color: var(--wap-panel);
+      border: 1px solid var(--wap-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .wap-box-head {
+      background-color: var(--wap-header);
+      color: var(--wap-neon);
+      font-weight: bold;
+      font-size: 12px;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--wap-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wap-box-body {
+      padding: 8px;
+    }
+
+    /* Tutorial Rows */
+    .tut-row {
+      padding: 8px 0;
+      border-bottom: 1px dashed #1b452e;
+    }
+
+    .tut-row:last-child {
+      border-bottom: none;
+    }
+
+    .wap-badge {
+      display: inline-block;
+      background-color: #133823;
+      color: var(--wap-neon);
+      border: 1px solid var(--wap-neon);
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
+      font-weight: bold;
+    }
+
+    .tut-title {
+      color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline;
+    }
+
+    .tut-title:hover {
+      color: var(--wap-neon);
+      text-decoration: underline;
+    }
+
+    .tut-meta {
+      font-size: 11px;
+      color: var(--wap-neon-dim);
+      margin-top: 3px;
+    }
+
+    /* Terminal Code Block */
+    .code-wrap {
+      position: relative;
+      background-color: #030705;
+      border: 1px solid #23593b;
+      border-radius: 4px;
+      margin: 8px 0;
+      padding: 8px;
+    }
+
+    .code-wrap pre {
+      margin: 0;
+      color: var(--wap-neon);
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      padding-right: 52px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background-color: #10301e;
+      color: var(--wap-neon);
+      border: 1px solid var(--wap-neon);
+      border-radius: 3px;
+      font-size: 10px;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    .copy-btn:active {
+      background-color: var(--wap-neon);
+      color: #040806;
+    }
+
+    /* Inputs & Buttons */
+    .wap-input, .wap-select, .wap-textarea {
+      width: 100%;
+      background-color: #040806;
+      border: 1px solid #245c3c;
+      color: var(--wap-text);
+      padding: 7px 8px;
+      font-size: 12px;
+      border-radius: 3px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      outline: none;
+    }
+
+    .wap-input:focus, .wap-select:focus, .wap-textarea:focus {
+      border-color: var(--wap-neon);
+    }
+
+    .wap-btn {
+      width: 100%;
+      background-color: #123822;
+      color: var(--wap-neon);
+      border: 1px solid var(--wap-neon);
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 3px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .wap-btn:active {
+      background-color: var(--wap-neon);
+      color: #040806;
+    }
+
+    .wap-btn-danger {
+      background-color: #331010;
+      color: #ff6b6b;
+      border: 1px solid #ff6b6b;
+      padding: 2px 6px;
+      font-size: 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    /* Category Filter Pills */
+    .cat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .cat-pill {
+      background-color: #07120c;
+      border: 1px solid #215437;
+      color: var(--wap-neon-dim);
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .cat-pill.active {
+      background-color: var(--wap-neon);
+      color: #040806;
+      font-weight: bold;
+      border-color: var(--wap-neon);
+    }
+
+    /* Shoutbox Items */
+    .shout-item {
+      padding: 6px 0;
+      border-bottom: 1px dotted #1c472f;
+      font-size: 12px;
+    }
+
+    .shout-item:last-child {
+      border-bottom: none;
+    }
+
+    /* File List Row */
+    .file-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px dashed #1b452e;
+      gap: 8px;
+    }
+
+    .file-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Custom Notification Banner (Replaces alert) */
+    .wap-toast {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #0d2b1a;
+      color: var(--wap-neon);
+      border: 1px solid var(--wap-neon);
+      padding: 7px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 9999;
+      box-shadow: 0 0 12px rgba(0, 255, 102, 0.35);
+      display: none;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .wap-footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 12px 8px;
+      border-top: 1px solid var(--wap-border);
+      background-color: #070f0b;
+      font-size: 11px;
+      color: var(--wap-neon-dim);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wap-frame">
+    <!-- CLASSIC WAP HEADER -->
+    <header class="wap-header">
+      <h1>[ CYBERWAP // SEC-LAB ]</h1>
+      <div class="subtitle">Ethical Hacking, Linux &amp; Cyber Defense Portal</div>
+    </header>
+
+    <!-- WAPKA-STYLE TOP STATUS BAR -->
+    <div class="wap-status">
+      <div>User: <strong id="statusUser" style="color:#00ff66;">BRAVE</strong> <span id="adminBadge" class="wap-badge" style="margin-left:3px;">ADMIN</span></div>
+      <div>Online: <strong id="onlineCounter" style="color:#00ff66;">18</strong> | <span class="wap-link" onclick="switchTab('admin')">[Account]</span></div>
+    </div>
+
+    <!-- 4-TAB NAVIGATION BAR -->
+    <nav class="wap-nav">
+      <button id="tabBtn-tutorials" class="active" onclick="switchTab('tutorials')">Tutorials</button>
+      <button id="tabBtn-cheatsheet" onclick="switchTab('cheatsheet')">Cheatsheet</button>
+      <button id="tabBtn-shoutbox" onclick="switchTab('shoutbox')">Shoutbox</button>
+      <button id="tabBtn-admin" onclick="switchTab('admin')">Login/Admin</button>
+    </nav>
+
+    <!-- =========================================================
+         TAB 1: TUTORIALS DIRECTORY, READER & WAP FILE LIST
+         ========================================================= -->
+    <main id="view-tutorials">
+      <!-- Single Lesson Reader (Hidden until a lesson is clicked) -->
+      <div id="lessonReader" class="wap-box hidden">
+        <div class="wap-box-head">
+          <span id="readerHeaderCat">[LESSON]</span>
+          <span class="wap-link" onclick="closeLesson()">[X] Close</span>
+        </div>
+        <div class="wap-box-body">
+          <h2 id="readerTitle" style="color:#ffffff; font-size:15px; font-weight:bold; margin-bottom:4px;"></h2>
+          <div id="readerMeta" class="tut-meta" style="margin-bottom:10px; border-bottom:1px solid #1b452e; padding-bottom:6px;"></div>
+          <div id="readerBody" style="white-space:pre-line; color:#d1fae0;"></div>
+          <div id="readerCodeContainer" class="hidden">
+            <div style="font-size:11px; color:#00ff66; margin-top:10px; font-weight:bold;">&gt;_ TERMINAL / CODE LAB:</div>
+            <div class="code-wrap">
+              <button class="copy-btn" onclick="copyTextFromEl('readerCodeText')">Copy</button>
+              <pre id="readerCodeText"></pre>
+            </div>
+          </div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <button class="wap-btn" onclick="closeLesson()">&laquo; Back to Tutorials</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tutorial Directory -->
+      <div id="lessonDirectory" class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; ETHICAL HACKING &amp; SEC TUTORIALS</span>
+          <span id="tutCountBadge" style="font-size:10px; color:#9ce6b8;">0 Labs</span>
+        </div>
+        <div class="wap-box-body">
+          <input type="text" id="tutSearch" class="wap-input" placeholder="Search topic (e.g. Nmap, Termux, SQLi, Wi-Fi)..." oninput="renderTutorials()" />
+          
+          <!-- Category Filters -->
+          <div class="cat-pills" id="categoryPills">
+            <button class="cat-pill active" onclick="setCategory('ALL', this)">ALL</button>
+            <button class="cat-pill" onclick="setCategory('TERMUX', this)">TERMUX</button>
+            <button class="cat-pill" onclick="setCategory('NETWORK', this)">NETWORK</button>
+            <button class="cat-pill" onclick="setCategory('WEB-SEC', this)">WEB-SEC</button>
+            <button class="cat-pill" onclick="setCategory('WIRELESS', this)">WIRELESS</button>
+            <button class="cat-pill" onclick="setCategory('LINUX', this)">LINUX</button>
+          </div>
+
+          <div id="tutorialListContainer"></div>
+        </div>
+      </div>
+
+      <!-- Classic WAP File / Tool List Section -->
+      <div class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; WAP FILELIST // CHEATSHEET DOWNLOADS</span>
+          <span style="font-size:10px; color:#9ce6b8;">.TXT</span>
+        </div>
+        <div class="wap-box-body" id="fileListContainer">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </main>
+
+    <!-- =========================================================
+         TAB 2: QUICK TERMINAL & SECURITY CHEATSHEET
+         ========================================================= -->
+    <section id="view-cheatsheet" class="hidden">
+      <div class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; TERMUX &amp; LINUX ESSENTIALS</span>
+        </div>
+        <div class="wap-box-body">
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">1. Update Repos &amp; Install Core Sec Tools</div>
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copyRawText('pkg update && pkg upgrade -y\npkg install nmap git python curl openssh -y')">Copy</button>
+            <pre>pkg update && pkg upgrade -y
+pkg install nmap git python curl openssh -y</pre>
+          </div>
+
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">2. Nmap Host &amp; Service Discovery (Authorized Targets)</div>
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copyRawText('nmap -sn 192.168.1.0/24\nnmap -sV -T4 scanme.nmap.org')">Copy</button>
+            <pre>nmap -sn 192.168.1.0/24
+nmap -sV -T4 scanme.nmap.org</pre>
+          </div>
+
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">3. Inspect HTTP Security Headers via Curl</div>
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copyRawText('curl -I -s https://example.com | grep -iE \"strict|frame|content-security|x-xss\"')">Copy</button>
+            <pre>curl -I -s https://example.com | grep -iE "strict|frame|content-security|x-xss"</pre>
+          </div>
+
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">4. Audit Listening Ports &amp; Active Sockets</div>
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copyRawText('ss -tulnp\nnetstat -ano')">Copy</button>
+            <pre>ss -tulnp
+netstat -ano</pre>
+          </div>
+
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">5. Generate Strong Ed25519 SSH Keypair</div>
+          <div class="code-wrap">
+            <button class="copy-btn" onclick="copyRawText('ssh-keygen -t ed25519 -C \"sec-lab@cyberwap\"')">Copy</button>
+            <pre>ssh-keygen -t ed25519 -C "sec-lab@cyberwap"</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         TAB 3: CLASSIC WAP SHOUTBOX
+         ========================================================= -->
+    <section id="view-shoutbox" class="hidden">
+      <div class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; LIVE WAP SHOUTBOX</span>
+          <button id="clearShoutsBtn" class="wap-btn-danger" onclick="clearAllShouts()">Clear All</button>
+        </div>
+        <div class="wap-box-body">
+          <div style="font-size:11px; color:#9ce6b8; margin-bottom:4px;">
+            Posting as: <strong id="shoutAuthorPreview" style="color:#00ff66;">BRAVE</strong>
+          </div>
+          <textarea id="shoutMessageInput" class="wap-textarea" rows="2" maxlength="220" placeholder="Share security tip, command, or question..."></textarea>
+          <button class="wap-btn" onclick="postShout()">Send Shout &raquo;</button>
+
+          <hr style="border:0; border-top:1px solid #1d4d32; margin:10px 0;" />
+          <div id="shoutListContainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         TAB 4: LOGIN / HANDLE SWITCHER & ADMIN PUBLISHER
+         ========================================================= -->
+    <section id="view-admin" class="hidden">
+      <!-- User Handle Switcher -->
+      <div class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; USER HANDLE / LOGIN</span>
+        </div>
+        <div class="wap-box-body">
+          <label style="font-size:11px; color:#9ce6b8;">Active Codename / Handle:</label>
+          <input type="text" id="handleInput" class="wap-input" placeholder="e.g. BRAVE or Elmar" maxlength="20" />
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <button class="cat-pill" onclick="quickHandle('BRAVE')">Use BRAVE</button>
+            <button class="cat-pill" onclick="quickHandle('Elmar')">Use Elmar</button>
+            <button class="cat-pill" onclick="quickHandle('Guest_01')">Use Guest_01</button>
+          </div>
+          <button class="wap-btn" onclick="updateUserHandle()">Save Active Handle</button>
+        </div>
+      </div>
+
+      <!-- Publish New Tutorial Form -->
+      <div class="wap-box">
+        <div class="wap-box-head">
+          <span>&raquo; PUBLISH NEW SECURITY TUTORIAL</span>
+        </div>
+        <div class="wap-box-body">
+          <label style="font-size:11px; color:#9ce6b8;">Category:</label>
+          <select id="pubCategory" class="wap-select">
+            <option value="TERMUX">TERMUX</option>
+            <option value="NETWORK">NETWORK</option>
+            <option value="WEB-SEC">WEB-SEC</option>
+            <option value="WIRELESS">WIRELESS</option>
+            <option value="LINUX">LINUX</option>
+          </select>
+
+          <label style="font-size:11px; color:#9ce6b8;">Tutorial Title:</label>
+          <input type="text" id="pubTitle" class="wap-input" placeholder="e.g. Hardening SSH Against Brute-Force" />
+
+          <label style="font-size:11px; color:#9ce6b8;">Lesson Explanation:</label>
+          <textarea id="pubBody" class="wap-textarea" rows="4" placeholder="Write clear step-by-step defensive & ethical lab guide..."></textarea>
+
+          <label style="font-size:11px; color:#9ce6b8;">Terminal Command / Code Snippet (Optional):</label>
+          <textarea id="pubCode" class="wap-textarea" rows="3" placeholder="e.g. sudo nano /etc/ssh/sshd_config"></textarea>
+
+          <button class="wap-btn" onclick="publishTutorial()">+ Publish Tutorial to Portal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="wap-footer">
+      <div><strong>Powered by: E.Tibayan</strong></div>
+      <div style="margin-top:2px;">CYBERWAP // SEC-LAB &bull; Educational &amp; Authorized Testing Only</div>
+    </footer>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="wapToast" class="wap-toast"></div>
+
+  <script>
+    // =========================================================
+    // STATE & DEFAULT DATA
+    // =========================================================
+    const DEFAULT_TUTORIALS = [
+      {
+        id: 101,
+        cat: "TERMUX",
+        title: "Termux Security Lab Setup on Android",
+        author: "BRAVE",
+        date: "2026-11-25",
+        body: "Transform your Android device into a portable Linux security workstation using Termux (installed via F-Droid). Always grant storage permissions and update package repositories before installing auditing tools like Nmap, Python, and OpenSSH.",
+        code: "termux-setup-storage\npkg update && pkg upgrade -y\npkg install nmap python git curl openssh -y"
+      },
+      {
+        id: 102,
+        cat: "NETWORK",
+        title: "Nmap Reconnaissance & Service Enumeration",
+        author: "Elmar",
+        date: "2026-11-25",
+        body: "Nmap (Network Mapper) identifies live hosts, open TCP/UDP ports, and running software versions. Defensive administrators use Nmap to find exposed services before attackers do. Always test only on networks you own or authorized targets like scanme.nmap.org.",
+        code: "# Ping sweep local subnet\nnmap -sn 192.168.1.0/24\n\n# Service & version detection\nnmap -sV -p 22,80,443 scanme.nmap.org"
+      },
+      {
+        id: 103,
+        cat: "WEB-SEC",
+        title: "SQL Injection (SQLi) Mechanics & Parameterized Defense",
+        author: "BRAVE",
+        date: "2026-11-25",
+        body: "SQL Injection occurs when untrusted user input alters the structure of a backend SQL query. Attackers use payloads like ' OR '1'='1 to bypass login forms. The permanent fix is using Parameterized Queries (Prepared Statements) so user input is treated strictly as data, never executable SQL.",
+        code: "// VULNERABLE (Never do this):\nconst sql = \"SELECT * FROM users WHERE user = '\" + userInput + \"'\";\n\n// SECURE (Parameterized Query):\nconst safeSql = \"SELECT * FROM users WHERE user = $1\";\nawait db.query(safeSql, [userInput]);"
+      },
+      {
+        id: 104,
+        cat: "WEB-SEC",
+        title: "Cross-Site Scripting (XSS) Hardening & CSP",
+        author: "Elmar",
+        date: "2026-11-25",
+        body: "Stored and Reflected XSS allow malicious scripts to execute inside a victim's browser session, stealing tokens or defacing pages. Prevent XSS by avoiding raw innerHTML with user strings—use textContent instead—and enforce a strict Content-Security-Policy header.",
+        code: "// Vulnerable DOM sink:\ncommentBox.innerHTML = userMessage;\n\n// Safe DOM rendering:\ncommentBox.textContent = userMessage;"
+      },
+      {
+        id: 105,
+        cat: "WIRELESS",
+        title: "Wi-Fi WPA2/WPA3 Security Audit Concepts",
+        author: "BRAVE",
+        date: "2026-11-25",
+        body: "Wireless auditing tests access points for weak pre-shared keys (PSK), legacy WPS PIN vulnerabilities, and rogue Evil Twin APs. During authorized audits, analysts inspect 4-way EAPOL handshakes and verify that routers enforce WPA2-AES (CCMP) or WPA3-SAE with WPS disabled.",
+        code: "# Check wireless interface mode on Linux\niwconfig\n\n# Inspect local ARP table for gateway spoofing\narp -a"
+      },
+      {
+        id: 106,
+        cat: "LINUX",
+        title: "Linux Privilege Escalation Enumeration Basics",
+        author: "Elmar",
+        date: "2026-11-25",
+        body: "After gaining low-privilege shell access in a CTF or pentest, analysts check for misconfigured SUID binaries, overly permissive sudoers rules, and world-writable cron jobs that could allow escalation to root.",
+        code: "# Check sudo privileges\nsudo -l\n\n# Find SUID binaries\nfind / -perm -4000 -type f 2>/dev/null"
+      }
+    ];
+
+    const DEFAULT_SHOUTS = [
+      {
+        id: 1,
+        user: "BRAVE",
+        time: "21:40",
+        msg: "Welcome sa CYBERWAP // SEC-LAB! Check out the new Termux & Nmap labs."
+      },
+      {
+        id: 2,
+        user: "Elmar",
+        time: "21:52",
+        msg: "Tip: Always use parameterized queries sa backend APIs para safe sa SQLi."
+      }
+    ];
+
+    const DOWNLOADABLE_FILES = [
+      {
+        filename: "nmap_cheatsheet_v1.txt",
+        size: "2.4 KB",
+        desc: "Nmap port scanning, NSE scripts & stealth flags reference",
+        content: "=== CYBERWAP // SEC-LAB: NMAP CHEATSHEET ===\nPowered by: E.Tibayan\n\n1. Host Discovery: nmap -sn 192.168.1.0/24\n2. Service Version: nmap -sV -T4 <target>\n3. OS Detection: nmap -O <target>\n4. Top 100 Ports: nmap --top-ports 100 <target>\n5. Vuln Scripts: nmap --script vuln <target>\n\n[!] Use strictly on authorized networks."
+      },
+      {
+        filename: "termux_sec_setup.txt",
+        size: "1.8 KB",
+        desc: "Essential Termux packages & SSH hardening commands",
+        content: "=== CYBERWAP // SEC-LAB: TERMUX SETUP ===\nPowered by: E.Tibayan\n\npkg update && pkg upgrade -y\ntermux-setup-storage\npkg install nmap git python nodejs curl openssh -y\nssh-keygen -t ed25519\n"
+      },
+      {
+        filename: "owasp_top10_defense.txt",
+        size: "3.1 KB",
+        desc: "Quick patch checklist for SQLi, XSS, CSRF & Auth flaws",
+        content: "=== CYBERWAP // SEC-LAB: WEB DEFENSE CHECKLIST ===\nPowered by: E.Tibayan\n\n[x] SQL Injection -> Use Parameterized Queries / Prepared Statements\n[x] XSS -> Sanitize HTML & use textContent instead of innerHTML\n[x] Auth -> Hash passwords with Argon2id or bcrypt\n[x] Headers -> Enable HSTS, X-Frame-Options: DENY, CSP\n"
+      }
+    ];
+
+    // Load persisted state
+    let tutorials = JSON.parse(localStorage.getItem("cyberwap_tutorials_v2")) || DEFAULT_TUTORIALS;
+    let shouts = JSON.parse(localStorage.getItem("cyberwap_shouts_v2")) || DEFAULT_SHOUTS;
+    let currentUser = localStorage.getItem("cyberwap_user_v2") || "BRAVE";
+    let selectedCategory = "ALL";
+
+    // =========================================================
+    // INITIALIZATION
+    // =========================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      syncUserUI();
+      renderTutorials();
+      renderFileList();
+      renderShouts();
+
+      // Subtle dynamic online counter for classic WAP feel
+      setInterval(() => {
+        const base = 16 + Math.floor(Math.random() * 7);
+        document.getElementById("onlineCounter").textContent = base;
+      }, 12000);
+    });
+
+    // =========================================================
+    // UI HELPERS & NAVIGATION
+    // =========================================================
+    function showToast(msg) {
+      const toast = document.getElementById("wapToast");
+      toast.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.style.display = "none";
+      }, 2400);
+    }
+
+    function switchTab(tabName) {
+      const tabs = ["tutorials", "cheatsheet", "shoutbox", "admin"];
+      tabs.forEach((t) => {
+        document.getElementById("view-" + t).classList.add("hidden");
+        document.getElementById("tabBtn-" + t).classList.remove("active");
+      });
+      document.getElementById("view-" + tabName).classList.remove("hidden");
+      document.getElementById("tabBtn-" + tabName).classList.add("active");
+
+      if (tabName === "tutorials") {
+        closeLesson();
+      }
+    }
+
+    function isAdminUser() {
+      const u = currentUser.trim().toLowerCase();
+      return u === "brave" || u === "elmar" || u === "admin";
+    }
+
+    function syncUserUI() {
+      document.getElementById("statusUser").textContent = currentUser;
+      document.getElementById("shoutAuthorPreview").textContent = currentUser;
+      document.getElementById("handleInput").value = currentUser;
+
+      const adminBadge = document.getElementById("adminBadge");
+      const clearBtn = document.getElementById("clearShoutsBtn");
+      if (isAdminUser()) {
+        adminBadge.classList.remove("hidden");
+        clearBtn.classList.remove("hidden");
+      } else {
+        adminBadge.classList.add("hidden");
+        clearBtn.classList.add("hidden");
+      }
+      renderShouts();
+    }
+
+    // =========================================================
+    // TUTORIALS LOGIC (FILTER, SEARCH, READER, PUBLISH)
+    // =========================================================
+    function setCategory(cat, btnEl) {
+      selectedCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach((el) => el.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+      renderTutorials();
+    }
+
+    function renderTutorials() {
+      const query = document.getElementById("tutSearch").value.trim().toLowerCase();
+      const container = document.getElementById("tutorialListContainer");
+      container.innerHTML = "";
+
+      const filtered = tutorials.filter((item) => {
+        const matchesCat = selectedCategory === "ALL" || item.cat === selectedCategory;
+        const matchesQuery =
+          item.title.toLowerCase().includes(query) ||
+          item.cat.toLowerCase().includes(query) ||
+          item.body.toLowerCase().includes(query);
+        return matchesCat && matchesQuery;
+      });
+
+      document.getElementById("tutCountBadge").textContent = `${filtered.length} Lab${filtered.length === 1 ? "" : "s"}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="color:#7ac496; padding:8px 0;">No matching tutorials found.</div>`;
+        return;
+      }
+
+      filtered.forEach((tut) => {
+        const row = document.createElement("div");
+        row.className = "tut-row";
+
+        const topLine = document.createElement("div");
+        const badge = document.createElement("span");
+        badge.className = "wap-badge";
+        badge.textContent = tut.cat;
+
+        const titleSpan = document.createElement("span");
+        titleSpan.className = "tut-title";
+        titleSpan.textContent = tut.title;
+        titleSpan.onclick = () => openLesson(tut.id);
+
+        topLine.appendChild(badge);
+        topLine.appendChild(titleSpan);
+
+        const metaLine = document.createElement("div");
+        metaLine.className = "tut-meta";
+        metaLine.textContent = `Author: ${tut.author} | Date: ${tut.date}`;
+
+        row.appendChild(topLine);
+        row.appendChild(metaLine);
+        container.appendChild(row);
+      });
+    }
+
+    function openLesson(id) {
+      const tut = tutorials.find((t) => t.id === id);
+      if (!tut) return;
+
+      document.getElementById("lessonDirectory").classList.add("hidden");
+      document.getElementById("lessonReader").classList.remove("hidden");
+
+      document.getElementById("readerHeaderCat").textContent = `[${tut.cat}] LAB MODULE`;
+      document.getElementById("readerTitle").textContent = tut.title;
+      document.getElementById("readerMeta").textContent = `Author: ${tut.author} | Published: ${tut.date}`;
+      document.getElementById("readerBody").textContent = tut.body;
+
+      const codeContainer = document.getElementById("readerCodeContainer");
+      const codePre = document.getElementById("readerCodeText");
+      if (tut.code && tut.code.trim().length > 0) {
+        codePre.textContent = tut.code;
+        codeContainer.classList.remove("hidden");
+      } else {
+        codeContainer.classList.add("hidden");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function closeLesson() {
+      document.getElementById("lessonReader").classList.add("hidden");
+      document.getElementById("lessonDirectory").classList.remove("hidden");
+    }
+
+    function publishTutorial() {
+      const cat = document.getElementById("pubCategory").value;
+      const title = document.getElementById("pubTitle").value.trim();
+      const body = document.getElementById("pubBody").value.trim();
+      const code = document.getElementById("pubCode").value.trim();
+
+      if (!title || !body) {
+        showToast("Please enter both Title and Lesson Explanation.");
+        return;
+      }
+
+      const newTut = {
+        id: Date.now(),
+        cat,
+        title,
+        author: currentUser,
+        date: new Date().toISOString().split("T")[0],
+        body,
+        code
+      };
+
+      tutorials.unshift(newTut);
+      localStorage.setItem("cyberwap_tutorials_v2", JSON.stringify(tutorials));
+
+      document.getElementById("pubTitle").value = "";
+      document.getElementById("pubBody").value = "";
+      document.getElementById("pubCode").value = "";
+
+      selectedCategory = "ALL";
+      document.querySelectorAll(".cat-pill").forEach((el, idx) => {
+        el.classList.toggle("active", idx === 0);
+      });
+
+      renderTutorials();
+      switchTab("tutorials");
+      showToast("Tutorial published to CYBERWAP!");
+    }
+
+    // =========================================================
+    // WAP FILELIST DOWNLOADS
+    // =========================================================
+    function renderFileList() {
+      const container = document.getElementById("fileListContainer");
+      container.innerHTML = "";
+
+      DOWNLOADABLE_FILES.forEach((file, index) => {
+        const row = document.createElement("div");
+        row.className = "file-row";
+
+        const info = document.createElement("div");
+        info.innerHTML = `
+          <div style="color:#ffffff; font-weight:bold; font-size:12px;">${file.filename} <span style="color:#00ff66; font-size:10px;">[${file.size}]</span></div>
+          <div style="color:#7ac496; font-size:11px;">${file.desc}</div>
+        `;
+
+        const dlBtn = document.createElement("button");
+        dlBtn.className = "copy-btn";
+        dlBtn.style.position = "static";
+        dlBtn.style.whiteSpace = "nowrap";
+        dlBtn.textContent = "Download";
+        dlBtn.onclick = () => downloadTextFile(index);
+
+        row.appendChild(info);
+        row.appendChild(dlBtn);
+        container.appendChild(row);
+      });
+    }
+
+    function downloadTextFile(index) {
+      const file = DOWNLOADABLE_FILES[index];
+      if (!file) return;
+      const blob = new Blob([file.content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Downloaded ${file.filename}`);
+    }
+
+    // =========================================================
+    // SHOUTBOX & ADMIN MODERATION
+    // =========================================================
+    function renderShouts() {
+      const container = document.getElementById("shoutListContainer");
+      container.innerHTML = "";
+
+      if (shouts.length === 0) {
+        container.innerHTML = `<div style="color:#7ac496; font-size:11px;">Shoutbox is empty. Be the first to post!</div>`;
+        return;
+      }
+
+      const canModerate = isAdminUser();
+
+      shouts.forEach((s) => {
+        const item = document.createElement("div");
+        item.className = "shout-item";
+
+        const topRow = document.createElement("div");
+        topRow.style.display = "flex";
+        topRow.style.justifyContent = "space-between";
+        topRow.style.alignItems = "center";
+
+        const userMeta = document.createElement("span");
+        userMeta.innerHTML = `<strong style="color:#00ff66;">${escapeHTML(s.user)}</strong> <span style="color:#659c7a; font-size:10px;">[${escapeHTML(s.time)}]</span>`;
+
+        topRow.appendChild(userMeta);
+
+        if (canModerate) {
+          const delBtn = document.createElement("button");
+          delBtn.className = "wap-btn-danger";
+          delBtn.textContent = "Del";
+          delBtn.onclick = () => deleteShout(s.id);
+          topRow.appendChild(delBtn);
+        }
+
+        const msgDiv = document.createElement("div");
+        msgDiv.style.marginTop = "3px";
+        msgDiv.style.color = "#d1fae0";
+        msgDiv.textContent = s.msg;
+
+        item.appendChild(topRow);
+        item.appendChild(msgDiv);
+        container.appendChild(item);
+      });
+    }
+
+    function postShout() {
+      const input = document.getElementById("shoutMessageInput");
+      const msg = input.value.trim();
+      if (!msg) {
+        showToast("Enter a message first.");
+        return;
+      }
+
+      const now = new Date();
+      const timeStr =
+        String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+
+      shouts.unshift({
+        id: Date.now(),
+        user: currentUser,
+        time: timeStr,
+        msg
+      });
+
+      localStorage.setItem("cyberwap_shouts_v2", JSON.stringify(shouts));
+      input.value = "";
+      renderShouts();
+      showToast("Shout posted!");
+    }
+
+    function deleteShout(id) {
+      shouts = shouts.filter((s) => s.id !== id);
+      localStorage.setItem("cyberwap_shouts_v2", JSON.stringify(shouts));
+      renderShouts();
+      showToast("Message removed.");
+    }
+
+    function clearAllShouts() {
+      shouts = [];
+      localStorage.setItem("cyberwap_shouts_v2", JSON.stringify(shouts));
+      renderShouts();
+      showToast("Shoutbox cleared.");
+    }
+
+    // =========================================================
+    // USER HANDLE MANAGEMENT
+    // =========================================================
+    function quickHandle(name) {
+      document.getElementById("handleInput").value = name;
+      updateUserHandle();
+    }
+
+    function updateUserHandle() {
+      const val = document.getElementById("handleInput").value.trim();
+      if (!val) {
+        showToast("Handle cannot be empty.");
+        return;
+      }
+      currentUser = val;
+      localStorage.setItem("cyberwap_user_v2", currentUser);
+      syncUserUI();
+      showToast(`Active handle set to: ${currentUser}`);
+    }
+
+    // =========================================================
+    // CLIPBOARD & SECURITY SANITIZER UTILITIES
+    // =========================================================
+    function copyTextFromEl(elementId) {
+      const text = document.getElementById(elementId).textContent;
+      copyRawText(text);
+    }
+
+    function copyRawText(text) {
+      const tempArea = document.createElement("textarea");
+      tempArea.value = text;
+      tempArea.style.position = "fixed";
+      tempArea.style.left = "-9999px";
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand("copy");
+        showToast("Command copied to clipboard!");
+      } catch (err) {
+        showToast("Copy failed. Select text manually.");
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
